@@ -1,1 +1,1 @@
-node ./Main.txt
+node ./src/Main.txt
