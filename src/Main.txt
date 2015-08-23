@@ -1,0 +1,8 @@
+
+var i = 10000,
+	j = 0;
+while (j < i) {
+	console.log("Hello!");
+	j++;
+	
+}
