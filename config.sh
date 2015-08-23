@@ -1,7 +1,1 @@
-pwd
-pwd
-pwd
-pwd
-pwd
-pwd
-pwd
+node ./Main.txt
