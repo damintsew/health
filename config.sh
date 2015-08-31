@@ -1,1 +1,4 @@
-TEST=FUCK
+APP_NAME=TEST
+SRC_FILE=Main.txt
+SRC_DIR=src
+USER=root
