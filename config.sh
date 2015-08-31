@@ -1,1 +1,1 @@
-node ./src/Main.txt
+TEST=FUCK
