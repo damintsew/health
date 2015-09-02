@@ -1,10 +1,12 @@
 #!/bin/sh
 
-GIT_URL="https://github.com/damintsew/health.git"
-BASE_PATH="/home/ec2-user/health"
+#GIT_URL="https://github.com/damintsew/health.git"
+#BASE_PATH="/home/ec2-user/health"
 
-source ./git_runner_programm.sh
+GIT_URL=$1
+BASE_PATH=$2
 
+source ./ProgrammRestartService.sh
 
 echo Configured GIT_URL=$GIT_URL
 echo Configured BASE_PATH=$BASE_PATH
@@ -19,11 +21,12 @@ BASE=$(git merge-base @ @{u})
 
 if [ $LOCAL = $REMOTE ]; then
     echo "Up-to-date"
-    RestartApplication
+    #todo remove
+	RestartApplication
+	
 
 elif [ $LOCAL = $BASE ]; then
     echo "Need to pull"
-
     git pull
     RestartApplication
 
