@@ -31,7 +31,7 @@
 . /etc/init.d/functions
 
 
-Init() {
+InitNodeApplicationRunner() {
         NAME=$APP_NAME
 
         SOURCE_DIR=$BASE_PATH/$SRC_DIR
@@ -56,10 +56,36 @@ Init() {
         echo PIDFILE=$pidfile
         echo LOGFILE=$logfile
         echo ------------------------------------
+		
+		
+	if [ -f $pidfile ]; then
+		read pid < $pidfile
+	else
+		pid=""
+	fi
+
+	if [ "$pid" != "" ]; then
+	  # Gnarly sed usage to obtain the foreverid.
+	  sed1="/$pid]/p"
+	  sed2="s/.*[([0-9]+)].*s$pid.*/1/g"
+	  foreverid=`$forever list -p $forever_dir | $sed -n $sed1 | $sed $sed2`
+	else
+	  foreverid=""
+	fi
 }
 
+StopNodeApplication() {
+  echo -n "Shutting down $NAME node instance : "
+  if [ "$foreverid" != "" ]; then
+    $node $SOURCE_DIR/prepareForStop.js
+    $forever stop -p $forever_dir $id
+  else
+    echo "Instance is not running";
+  fi
+  RETVAL=$?
+}
 
-Start() {
+StartNodeApplication() {
   echo "Starting $NAME node instance: "
 
   if [ "$foreverid" == "" ]; then
@@ -79,57 +105,6 @@ Start() {
     RETVAL=$?
   else
     echo "Instance already running"
-    RETVAL=0
+    StopNodeApplication
   fi
 }
-
-stop() {
-  echo -n "Shutting down $NAME node instance : "
-  if [ "$foreverid" != "" ]; then
-    $node $SOURCE_DIR/prepareForStop.js
-    $forever stop -p $forever_dir $id
-  else
-    echo "Instance is not running";
-  fi
-  RETVAL=$?
-}
-
-
-
-if [ -f $pidfile ]; then
-  read pid < $pidfile
-else
-  pid=""
-fi
-
-if [ "$pid" != "" ]; then
-  # Gnarly sed usage to obtain the foreverid.
-  sed1="/$pid]/p"
-  sed2="s/.*[([0-9]+)].*s$pid.*/1/g"
-  foreverid=`$forever list -p $forever_dir | $sed -n $sed1 | $sed $sed2`
-else
-  foreverid=""
-fi
-
-
-
-#case "$1" in
-#  start)
-#    start
-#    ;;
-#  stop)
-#    stop
-#    ;;
-#  status)
- #   status -p ${pidfile}
- #   ;;
-#  *)
-
-
-
-
-
-
-
-
-

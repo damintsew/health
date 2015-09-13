@@ -5,8 +5,10 @@
 
 GIT_URL=$1
 BASE_PATH=$2
+CURRENT_DIR=$(dirname $0)
 
-source ./ProgrammRestartService.sh
+source $CURRENT_DIR/ProgrammRestartService.sh
+
 
 echo Configured GIT_URL=$GIT_URL
 echo Configured BASE_PATH=$BASE_PATH
